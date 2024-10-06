@@ -1,8 +1,18 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"go-todo/internal/service"
 
-type Handler struct{}
+	"github.com/gin-gonic/gin"
+)
+
+type Handler struct {
+	service *service.Service
+}
+
+func NewHandler(service *service.Service) *Handler {
+	return &Handler{service: service}
+}
 
 func (h *Handler) InitRouter() *gin.Engine {
 	route := gin.New()
@@ -19,11 +29,11 @@ func (h *Handler) InitRouter() *gin.Engine {
 		{
 			todoLists.POST("/", h.createTodoList)
 			todoLists.GET("/", h.getAllTodoLists)
-			todoLists.GET("/:id", h.getTodoListById)
-			todoLists.PUT("/:id", h.updateTodoList)
+			todoLists.GET("/:todo_list_id", h.getTodoListById)
+			todoLists.PUT("/:todo_list_id", h.updateTodoList)
 			todoLists.DELETE("/:id", h.deleteTodoList)
 
-			tasks := todoLists.Group(":id/task")
+			tasks := todoLists.Group(":id/tasks")
 			{
 				tasks.POST("/", h.createTask)
 				tasks.GET("/", h.getAllTasks)
