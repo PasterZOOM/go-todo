@@ -31,9 +31,9 @@ func (h *Handler) InitRouter() *gin.Engine {
 			todoLists.GET("/", h.getAllTodoLists)
 			todoLists.GET("/:todo_list_id", h.getTodoListById)
 			todoLists.PUT("/:todo_list_id", h.updateTodoList)
-			todoLists.DELETE("/:id", h.deleteTodoList)
+			todoLists.DELETE("/:todo_list_id", h.deleteTodoList)
 
-			tasks := todoLists.Group(":id/tasks")
+			tasks := todoLists.Group(":todo_list_id/tasks")
 			{
 				tasks.POST("/", h.createTask)
 				tasks.GET("/", h.getAllTasks)
