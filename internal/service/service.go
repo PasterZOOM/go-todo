@@ -1,8 +1,13 @@
 package service
 
-import "go-todo/internal/repository"
+import (
+	"go-todo/internal/domain"
+	"go-todo/internal/repository"
+)
 
-type Authorization interface{}
+type Authorization interface {
+	CreateUser(user domain.User) (int, error)
+}
 
 type TodoList interface{}
 
@@ -14,6 +19,8 @@ type Service struct {
 	Task
 }
 
-func NewService(repository *repository.Repository) *Service {
-	return &Service{}
+func NewService(repos *repository.Repository) *Service {
+	return &Service{
+		Authorization: NewAuthService(repos.Authorization),
+	}
 }
