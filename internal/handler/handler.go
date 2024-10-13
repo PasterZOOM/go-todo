@@ -23,7 +23,7 @@ func (h *Handler) InitRouter() *gin.Engine {
 		auth.POST("sign-in", h.signIn)
 	}
 
-	api := route.Group("/api")
+	api := route.Group("/api", h.userIdentity)
 	{
 		todoLists := api.Group("todo-lists")
 		{

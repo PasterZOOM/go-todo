@@ -1,8 +1,19 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
 
-func (h *Handler) createTodoList(c *gin.Context)  {}
+	"github.com/gin-gonic/gin"
+)
+
+func (h *Handler) createTodoList(c *gin.Context) {
+	id, _ := c.Get(userCtx)
+	c.JSON(
+		http.StatusOK, map[string]interface{}{
+			userCtx: id,
+		},
+	)
+}
 func (h *Handler) getAllTodoLists(c *gin.Context) {}
 func (h *Handler) getTodoListById(c *gin.Context) {}
 func (h *Handler) updateTodoList(c *gin.Context)  {}
