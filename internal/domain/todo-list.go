@@ -6,6 +6,11 @@ type TodoList struct {
 	Description string `json:"description" db:"description"`
 }
 
+type UpdateTodoListInput struct {
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
+}
+
 type UserTodolist struct {
 	ID         int `json:"id" db:"id"`
 	UserID     int `json:"userId" db:"user_id"`
