@@ -11,7 +11,11 @@ type Authorization interface {
 	ParseToken(token string) (int, error)
 }
 
-type TodoList interface{}
+type TodoList interface {
+	Create(userId int, list domain.TodoList) (int, error)
+	GetAll(userId int) ([]domain.TodoList, error)
+	GetById(userId int, id int) (domain.TodoList, error)
+}
 
 type Task interface{}
 
@@ -24,5 +28,6 @@ type Service struct {
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
+		TodoList:      NewTodoListService(repos.TodoList),
 	}
 }

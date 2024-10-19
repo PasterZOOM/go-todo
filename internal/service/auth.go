@@ -19,7 +19,7 @@ const (
 
 type TokenClaims struct {
 	jwt.StandardClaims
-	UserId int `json:"user_id"`
+	UserID int `json:"userId"`
 }
 
 type AuthService struct {
@@ -36,8 +36,8 @@ func (s *AuthService) CreateUser(user domain.User) (int, error) {
 	return s.repo.CreateUser(user)
 }
 
-func (s *AuthService) GenerateToken(username, password string) (string, error) {
-	user, err := s.repo.GetUser(username, generatePasswordHash(password))
+func (s *AuthService) GenerateToken(userName, password string) (string, error) {
+	user, err := s.repo.GetUser(userName, generatePasswordHash(password))
 	if err != nil {
 		return "", err
 	}
@@ -74,7 +74,7 @@ func (s *AuthService) ParseToken(accessToken string) (int, error) {
 		return 0, errors.New("invalid token")
 	}
 
-	return claims.UserId, nil
+	return claims.UserID, nil
 }
 
 func generatePasswordHash(password string) string {
