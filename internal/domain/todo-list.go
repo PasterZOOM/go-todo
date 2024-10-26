@@ -7,8 +7,8 @@ type TodoList struct {
 }
 
 type UpdateTodoListInput struct {
-	Title       *string `json:"title"`
-	Description *string `json:"description"`
+	Title       *string `json:"title" db:"title"`
+	Description *string `json:"description" db:"description"`
 }
 
 type UserTodolist struct {

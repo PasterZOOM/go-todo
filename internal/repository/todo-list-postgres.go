@@ -102,10 +102,14 @@ func (r *TodoListPostgres) Update(
 	}
 
 	query := fmt.Sprintf(
-		"UPDATE %s tl SET %s FROM %s ul WHERE tl.id = ul.todo_list_id AND ul.todo_list_id = $%d AND ul.user_id = $%d",
-		todoListTable, setQuery, usersTodoListsTable, argId, argId+1,
+		"UPDATE %s tl SET %s FROM %s ul WHERE tl.id = ul.todo_list_id AND ul.user_id = $%d AND ul.todo_list_id = $%d",
+		todoListTable,
+		setQuery,
+		usersTodoListsTable,
+		argId,
+		argId+1,
 	)
-	args = append(args, todoListId, userId)
+	args = append(args, userId, todoListId)
 
 	_, err := r.db.Exec(query, args...)
 	return err
@@ -114,7 +118,8 @@ func (r *TodoListPostgres) Update(
 func (r *TodoListPostgres) Delete(userId int, todoListId int) error {
 	query := fmt.Sprintf(
 		"DELETE FROM %s tl USING %s ul WHERE tl.id = ul.todo_list_id AND ul.user_id = $1 AND ul.todo_list_id = $2",
-		todoListTable, usersTodoListsTable,
+		todoListTable,
+		usersTodoListsTable,
 	)
 
 	_, err := r.db.Exec(query, userId, todoListId)

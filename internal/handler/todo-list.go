@@ -68,7 +68,7 @@ func (h *Handler) getTodoListById(c *gin.Context) {
 
 	todoListId, err := strconv.Atoi(c.Param("todo_list_id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, "Invalid todo_list_id param")
 		return
 	}
 
@@ -93,7 +93,7 @@ func (h *Handler) updateTodoList(c *gin.Context) {
 
 	todoListId, err := strconv.Atoi(c.Param("todo_list_id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, "Invalid todo_list_id param")
 		return
 	}
 
@@ -120,7 +120,7 @@ func (h *Handler) deleteTodoList(c *gin.Context) {
 
 	todoListId, err := strconv.Atoi(c.Param("todo_list_id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, "Invalid todo_list_id param")
 		return
 	}
 
