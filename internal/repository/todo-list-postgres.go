@@ -52,7 +52,7 @@ func (r *TodoListPostgres) GetAll(userId int) ([]domain.TodoList, error) {
 	var todoLists []domain.TodoList
 
 	query := fmt.Sprintf(
-		"SELECT tl.id, tl.title, tl.description FROM %s tl INNER JOIN %s ul on tl.id = ul.todo_list_id WHERE ul.user_id = $1",
+		"SELECT tl.id, tl.title, tl.description FROM %s tl INNER JOIN %s utl on tl.id = utl.todo_list_id WHERE utl.user_id = $1",
 		todoListTable, usersTodoListsTable,
 	)
 
@@ -65,7 +65,7 @@ func (r *TodoListPostgres) GetById(userId int, todoListId int) (domain.TodoList,
 	var todoList domain.TodoList
 
 	query := fmt.Sprintf(
-		"SELECT tl.id, tl.title, tl.description FROM %s tl INNER JOIN %s ul on tl.id = ul.todo_list_id WHERE ul.user_id = $1 AND ul.todo_list_id = $2",
+		"SELECT tl.id, tl.title, tl.description FROM %s tl INNER JOIN %s utl on tl.id = utl.todo_list_id WHERE utl.user_id = $1 AND utl.todo_list_id = $2",
 		todoListTable, usersTodoListsTable,
 	)
 
@@ -102,7 +102,7 @@ func (r *TodoListPostgres) Update(
 	}
 
 	query := fmt.Sprintf(
-		"UPDATE %s tl SET %s FROM %s ul WHERE tl.id = ul.todo_list_id AND ul.user_id = $%d AND ul.todo_list_id = $%d",
+		"UPDATE %s tl SET %s FROM %s utl WHERE tl.id = utl.todo_list_id AND utl.user_id = $%d AND utl.todo_list_id = $%d",
 		todoListTable,
 		setQuery,
 		usersTodoListsTable,
@@ -117,7 +117,7 @@ func (r *TodoListPostgres) Update(
 
 func (r *TodoListPostgres) Delete(userId int, todoListId int) error {
 	query := fmt.Sprintf(
-		"DELETE FROM %s tl USING %s ul WHERE tl.id = ul.todo_list_id AND ul.user_id = $1 AND ul.todo_list_id = $2",
+		"DELETE FROM %s tl USING %s utl WHERE tl.id = utl.todo_list_id AND utl.user_id = $1 AND utl.todo_list_id = $2",
 		todoListTable,
 		usersTodoListsTable,
 	)
