@@ -1,9 +1,12 @@
 package handler
 
 import (
+	"go-todo/cmd/docs"
 	"go-todo/internal/service"
 
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Handler struct {
@@ -17,15 +20,17 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRouter() *gin.Engine {
 	route := gin.New()
 
-	auth := route.Group("/auth")
-	{
-		auth.POST("sign-up", h.signUp)
-		auth.POST("sign-in", h.signIn)
-	}
+	docs.SwaggerInfo.BasePath = "/"
 
-	api := route.Group("/api", h.userIdentity)
+	v1 := route.Group("/api/v1")
 	{
-		todoLists := api.Group("todo-lists")
+		auth := v1.Group("/auth")
+		{
+			auth.POST("sign-up", h.signUp)
+			auth.POST("sign-in", h.signIn)
+		}
+
+		todoLists := v1.Group("todo-lists", h.userIdentity)
 		{
 			todoLists.POST("/", h.createTodoList)
 			todoLists.GET("/", h.getAllTodoLists)
@@ -37,16 +42,14 @@ func (h *Handler) InitRouter() *gin.Engine {
 			{
 				tasks.POST("/", h.createTask)
 				tasks.GET("/", h.getAllTasks)
+				tasks.GET("/:task_id", h.getTaskById)
+				tasks.PUT("/:task_id", h.updateTask)
+				tasks.DELETE("/:task_id", h.deleteTask)
 			}
 		}
-
-		tasks := api.Group("tasks")
-		{
-			tasks.GET("/:id", h.getTaskById)
-			tasks.PUT("/:id", h.updateTask)
-			tasks.DELETE("/:id", h.deleteTask)
-		}
 	}
+
+	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	return route
 }

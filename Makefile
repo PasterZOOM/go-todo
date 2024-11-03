@@ -3,3 +3,12 @@ run-db-container:
 
 run-dev-server:
 	air
+
+run-migrate:
+	migrate -path ./schema -database 'postgres://postgres:qweR1234@localhost:5432/postgres?sslmode=disable' up
+
+run-drop-db:
+	migrate -path ./schema -database 'postgres://postgres:qweR1234@localhost:5432/postgres?sslmode=disable' down
+
+gen-docs:
+	swag init -g ./cmd/todo/main.go -o cmd/docs

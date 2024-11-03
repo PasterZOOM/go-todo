@@ -1,14 +1,14 @@
 package domain
 
 type TodoList struct {
-	ID          int    `json:"id" db:"id"`
-	Title       string `json:"title" db:"title" binding:"required"`
-	Description string `json:"description" db:"description"`
+	ID          int    `json:"id" db:"id" example:"1"`
+	Title       string `json:"title" db:"title" binding:"required" example:"Todo list 1"`
+	Description string `json:"description" db:"description"  example:"Description for todo list 1"`
 }
 
 type UpdateTodoListInput struct {
-	Title       *string `json:"title" db:"title"`
-	Description *string `json:"description" db:"description"`
+	Title       *string `json:"title" db:"title" example:"New title"`
+	Description *string `json:"description" db:"description" example:"New description"`
 }
 
 type UserTodolist struct {
