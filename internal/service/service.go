@@ -6,9 +6,13 @@ import (
 )
 
 type Authorization interface {
-	CreateUser(user domain.User) (int, error)
+	CreateUser(user domain.UserInput) (*domain.UserResponse, error)
 	GenerateToken(userName, password string) (string, error)
 	ParseToken(token string) (int, error)
+}
+
+type User interface {
+	GetUserData(userId int) (*domain.UserResponse, error)
 }
 
 type TodoList interface {
@@ -29,6 +33,7 @@ type Task interface {
 
 type Service struct {
 	Authorization
+	User
 	TodoList
 	Task
 }
@@ -36,6 +41,7 @@ type Service struct {
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
+		User:          NewUserService(repos.User),
 		TodoList:      NewTodoListService(repos.TodoList),
 		Task:          NewTaskService(repos.Task, repos.TodoList),
 	}

@@ -1,0 +1,13 @@
+with-expecter: True
+dir: "{{.InterfaceDir}}/mocks"
+mockname: "{{.InterfaceName}}"
+outpkg: "mocks"
+filename: "{{.InterfaceName}}.go"
+all: True
+packages:
+  go-todo/internal/repository:
+    config:
+      recursive: True
+  go-todo/internal/service:
+    config:
+      recursive: True

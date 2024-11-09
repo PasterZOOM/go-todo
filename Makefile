@@ -12,3 +12,12 @@ run-drop-db:
 
 gen-docs:
 	swag init -g ./cmd/todo/main.go -o cmd/docs
+
+gen-mocks:
+	mockery
+
+run-tests: get-mocks
+	go test ./... -v
+
+lint:
+	golangci-lint run

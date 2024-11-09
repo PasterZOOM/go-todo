@@ -30,7 +30,10 @@ func (r *TaskPostgres) Create(todoListId int, task domain.Task) (int, error) {
 
 	row := tx.QueryRow(createTaskQuery, task.Title, task.Description)
 	if err := row.Scan(&taskId); err != nil {
-		tx.Rollback()
+		err := tx.Rollback()
+		if err != nil {
+			return 0, err
+		}
 		return 0, err
 	}
 
@@ -40,7 +43,10 @@ func (r *TaskPostgres) Create(todoListId int, task domain.Task) (int, error) {
 	)
 	_, err = tx.Exec(createTodoListsTasksQuery, todoListId, taskId)
 	if err != nil {
-		tx.Rollback()
+		err := tx.Rollback()
+		if err != nil {
+			return 0, err
+		}
 		return 0, err
 	}
 

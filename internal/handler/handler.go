@@ -3,6 +3,7 @@ package handler
 import (
 	"go-todo/cmd/docs"
 	"go-todo/internal/service"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -20,6 +21,15 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRouter() *gin.Engine {
 	route := gin.New()
 
+	route.NoRoute(
+		func(c *gin.Context) {
+			c.JSON(
+				http.StatusNotFound, gin.H{
+					"message": "Route not found",
+				},
+			)
+		},
+	)
 	docs.SwaggerInfo.BasePath = "/"
 
 	v1 := route.Group("/api/v1")
@@ -28,6 +38,11 @@ func (h *Handler) InitRouter() *gin.Engine {
 		{
 			auth.POST("sign-up", h.signUp)
 			auth.POST("sign-in", h.signIn)
+		}
+
+		users := v1.Group("/users", h.userIdentity)
+		{
+			users.GET("/:user_id", h.getUserData)
 		}
 
 		todoLists := v1.Group("todo-lists", h.userIdentity)
